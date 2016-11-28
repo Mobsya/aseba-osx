@@ -2,6 +2,8 @@
 your_qt_path='/usr/local/Trolltech/Qt-4.8.7'
 your_qwt_path='/usr/local/qwt-6.1.2'
 
+# show commands before their execution
+set -v
 
 ################################################
 #create directory with correct architecture
