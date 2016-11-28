@@ -111,7 +111,7 @@ do
 	install_name_tool -id  @executable_path/../Frameworks/$qtlib.framework/Versions/4/$qtlib $qtlib.framework/Versions/4/$qtlib
 	otool -L $qtlib.framework/Versions/4/$qtlib 
 	
-	codesign --force --verify --verbose --sign "Developer ID Application: Association Mobsya (P97H86YL8K)" $qtlib.framework/Versions/4/$qtlib
+	codesign --force --verify --verbose --sign "Developer ID Application: Association Mobsya (P97H86YL8K)" ${qtlib}.framework
 done
 
 # Qwt framework
