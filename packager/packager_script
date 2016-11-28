@@ -134,7 +134,7 @@ install_name_tool -change $your_qt_path/lib/QtCore.framework/Versions/4/QtCore @
 install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg.framework/Versions/4/QtSvg qwt.framework/Versions/6/qwt
 install_name_tool -change $your_qt_path/lib/QtOpenGL.framework/Versions/4/QtOpenGL @executable_path/../Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL qwt.framework/Versions/6/qwt
 otool -L qwt.framework/Versions/6/qwt
-codesign --force --verify --verbose --sign "Developer ID Application: Association Mobsya (P97H86YL8K)" qwt.framework/Versions/6/qwt
+codesign --force --verify --verbose --sign "Developer ID Application: Association Mobsya (P97H86YL8K)" qwt.framework/
 
 # Dashel
 cp $WORKSPACE/build/dashel/libdashel.1.2.0.dylib .
