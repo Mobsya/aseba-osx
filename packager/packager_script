@@ -93,6 +93,7 @@ do
 	rm $qtlib.framework/Versions/Current/*_debug
 	rm $qtlib.framework/*_debug
 	rm $qtlib.framework/*_debug.prl
+	mkdir -p ${qtlib}.framework/Resources/
     mv $qtlib.framework/Contents/Info.plist ${qtlib}.framework/Resources/
 	TMP=$(sed 's/_debug//g' ${qtlib}.framework/Resources/Info.plist)
     echo "$TMP" > ${qtlib}.framework/Resources/Info.plist
