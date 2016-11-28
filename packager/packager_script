@@ -232,30 +232,30 @@ do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 	do
-		hln ../../../libraries/$qtframework.framework $qtframework.framework
+		cp ../../../libraries/$qtframework.framework $qtframework.framework
 	done
 
-	hln ../../../libraries/qwt.framework qwt.framework
-	hln ../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
-	hln ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
+	cp ../../../libraries/qwt.framework qwt.framework
+	cp ../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
+	cp ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
 	cd ../translations
 	for lang in "fr" "de" "it" "es" "ja"
 	do
-		hln ../../../libraries/translations/qt_$lang.qm qt_$lang.qm
+		cp ../../../libraries/translations/qt_$lang.qm qt_$lang.qm
 	done
 
 	cd ../Plugins/imageformats
 	for qtplugin in "libqgif.dylib" "libqico.dylib" "libqjpeg.dylib" "libqmng.dylib" "libqsvg.dylib" "libqtga.dylib" "libqtiff.dylib"
 	do
-		hln ../../../../libraries/$qtplugin $qtplugin
+		cp ../../../../libraries/$qtplugin $qtplugin
 	done
 
 	cd ../iconengines
-	hln ../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
+	cp ../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
 
 	cd ../sqldrivers
-	hln ../../../../libraries/libqsqlite.dylib libqsqlite.dylib
+	cp ../../../../libraries/libqsqlite.dylib libqsqlite.dylib
 	cd ../../../..
 	
 	codesign --force --verify --verbose --sign "Developer ID Application: Association Mobsya (P97H86YL8K)" "$asebaapps"
@@ -287,34 +287,34 @@ do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 	do
-		hln ../../../../libraries/$qtframework.framework $qtframework.framework
+		cp ../../../../libraries/$qtframework.framework $qtframework.framework
 	done
 
-	hln ../../../../libraries/qwt.framework qwt.framework
-	hln ../../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
-	hln ../../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
+	cp ../../../../libraries/qwt.framework qwt.framework
+	cp ../../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
+	cp ../../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
 	cd ../translations
 	for lang in "fr" "de" "it" "es" "ja"
 	do
-		hln ../../../../libraries/translations/qt_$lang.qm qt_$lang.qm
+		cp ../../../../libraries/translations/qt_$lang.qm qt_$lang.qm
 	done
 
 	cd ../Plugins/imageformats
 	for qtplugin in "libqgif.dylib" "libqico.dylib" "libqjpeg.dylib" "libqmng.dylib" "libqsvg.dylib" "libqtga.dylib" "libqtiff.dylib"
 	do
-		hln ../../../../../libraries/$qtplugin $qtplugin
+		cp ../../../../../libraries/$qtplugin $qtplugin
 	done
 
 	cd ../iconengines
-	hln ../../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
+	cp ../../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
 
 	cd ../sqldrivers
-	hln ../../../../../libraries/libqsqlite.dylib libqsqlite.dylib
+	cp ../../../../../libraries/libqsqlite.dylib libqsqlite.dylib
 	cd ../../../.. 
 	
 	cd "$asebaapps/Contents/MacOS/"
-	hln ../../../../bin/asebaswitch asebaswitch
+	cp ../../../../bin/asebaswitch asebaswitch
 	cd ../../..
 	
 	codesign --force --verify --verbose --sign "Developer ID Application: Association Mobsya (P97H86YL8K)" "$asebaapps"
