@@ -97,7 +97,7 @@ do
 	rm ${qtlib}.framework/${qtlib}
 	rm ${qtlib}.framework/Headers
 	rm ${qtlib}.framework/${qtlib}.prl
-	rm -r ${qtlib}.framework/Content
+	rm -r ${qtlib}.framework/Contents
 	rm -r ${qtlib}.framework/Versions/4/Headers
 	mkdir -p ${qtlib}.framework/Versions/4/Resources/
 	ln -s Versions/Current/${qtlib} ${qtlib}.framework/${qtlib}
