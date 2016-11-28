@@ -232,10 +232,10 @@ do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 	do
-		cp ../../../libraries/$qtframework.framework $qtframework.framework
+		cp -R ../../../libraries/$qtframework.framework $qtframework.framework
 	done
 
-	cp ../../../libraries/qwt.framework qwt.framework
+	cp -R ../../../libraries/qwt.framework qwt.framework
 	cp ../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
 	cp ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
@@ -287,10 +287,10 @@ do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 	do
-		cp ../../../../libraries/$qtframework.framework $qtframework.framework
+		cp -R ../../../../libraries/$qtframework.framework $qtframework.framework
 	done
 
-	cp ../../../../libraries/qwt.framework qwt.framework
+	cp -R ../../../../libraries/qwt.framework qwt.framework
 	cp ../../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
 	cp ../../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
