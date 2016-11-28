@@ -94,7 +94,11 @@ do
 	rm $qtlib.framework/*_debug
 	rm $qtlib.framework/*_debug.prl
 	rmdir ${qtlib}.framework/Resources
+	rm ${qtlib}.framework/${qtlib}
+	rm ${qtlib}.framework/Headers
+	rm -r ${qtlib}.framework/Versions/4/Headers
 	mkdir -p ${qtlib}.framework/Versions/4/Resources/
+	ln -s Versions/Current/${qtlib} ${qtlib}.framework/${qtlib}
 	ln -s Versions/Current/Resources ${qtlib}.framework/Resources
 	mv ${qtlib}.framework/Contents/Info.plist ${qtlib}.framework/Versions/4/Resources/
 	TMP=$(sed 's/_debug//g' ${qtlib}.framework/Resources/Info.plist)
