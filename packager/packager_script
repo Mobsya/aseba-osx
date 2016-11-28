@@ -126,7 +126,7 @@ rm -r qwt.framework/Versions/6/Headers
 rm qwt.framework/Headers
 mkdir -p qwt.framework/Versions/6/Resources/
 ln -s Versions/Current/Resources qwt.framework/Resources
-mv qwt.framework/Contents/Info.plist qwt.framework/Versions/6/
+mv qwt.framework/Contents/Info.plist qwt.framework/Versions/6/Resources/
 rm -r qwt.framework/Contents
 install_name_tool -id  @executable_path/../Frameworks/qwt.framework/Versions/6/qwt qwt.framework/Versions/6/qwt
 install_name_tool -change $your_qt_path/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui qwt.framework/Versions/6/qwt
