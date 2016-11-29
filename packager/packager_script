@@ -89,15 +89,15 @@ do
 	cp -R $your_qt_path/lib/$qtlib.framework .
 	
 	echo "Correcting framework debug code and bad Info.plist: ${qtlib}"
-	rm $qtlib.framework/Versions/4/*_debug
-	rm $qtlib.framework/Versions/Current/*_debug
-	rm $qtlib.framework/*_debug
-	rm $qtlib.framework/*_debug.prl
+	rm -f $qtlib.framework/Versions/4/*_debug
+	rm -f $qtlib.framework/Versions/Current/*_debug
+	rm -f $qtlib.framework/*_debug
+	rm -f $qtlib.framework/*_debug.prl
 	rmdir ${qtlib}.framework/Resources
-	rm ${qtlib}.framework/${qtlib}
-	rm ${qtlib}.framework/Headers
-	rm ${qtlib}.framework/${qtlib}.prl
-	rm -r ${qtlib}.framework/Versions/4/Headers
+	rm -f ${qtlib}.framework/${qtlib}
+	rm -f ${qtlib}.framework/Headers
+	rm -f ${qtlib}.framework/${qtlib}.prl
+	rm -rf ${qtlib}.framework/Versions/4/Headers
 	mkdir -p ${qtlib}.framework/Versions/4/Resources/
 	ln -s Versions/Current/${qtlib} ${qtlib}.framework/${qtlib}
 	ln -s Versions/Current/Resources ${qtlib}.framework/Resources
