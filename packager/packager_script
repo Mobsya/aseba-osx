@@ -103,6 +103,7 @@ do
 	ln -s Versions/Current/Resources ${qtlib}.framework/Resources
 	mv ${qtlib}.framework/Contents/Info.plist ${qtlib}.framework/Versions/4/Resources/
 	rm -r ${qtlib}.framework/Contents
+	rm -f ${qtlib}.framework/Versions/Current/Resources/Resources
 	TMP=$(sed 's/_debug//g' ${qtlib}.framework/Resources/Info.plist)
 	echo "$TMP" > ${qtlib}.framework/Resources/Info.plist
     
