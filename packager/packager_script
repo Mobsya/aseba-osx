@@ -338,6 +338,7 @@ do
 	
 	cd "$asebaapps/Contents/MacOS/"
 	cp ../../../../bin/asebaswitch asebaswitch
+	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.2.0.dylib asebaswitch
 	cd ../../..
 	
 	codesign --force --verify --verbose --strict --sign "Developer ID Application: Association Mobsya (P97H86YL8K)" "$asebaapps"
