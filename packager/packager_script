@@ -43,13 +43,13 @@ mkdir Simulations
 for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app"
 do
 	mkdir -p "$asebaapps/Contents/"{MacOS,Plugins/{imageformats,sqldrivers,iconengines},Resources,Frameworks,translations}
-	hln $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
+	cp $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
 done
 cd Simulations
 for asebaapps in "Aseba Playground.app" "Aseba Challenge.app"
 do
 	mkdir -p "$asebaapps/Contents/"{MacOS,Plugins/{imageformats,sqldrivers,iconengines},Resources,Frameworks,translations}
-	hln $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
+	cp $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
 done
 #copy resources into bundle folders
 cp $WORKSPACE/source/aseba/targets/playground/unifr.playground .
@@ -253,30 +253,30 @@ do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 	do
-		hln ../../../libraries/$qtframework.framework $qtframework.framework
+		cp -R ../../../libraries/$qtframework.framework $qtframework.framework
 	done
 
-	hln ../../../libraries/qwt.framework qwt.framework
-	hln ../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
-	hln ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
+	cp -R ../../../libraries/qwt.framework qwt.framework
+	cp ../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
+	cp ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
 	cd ../translations
 	for lang in "fr" "de" "it" "es" "ja"
 	do
-		hln ../../../libraries/translations/qt_$lang.qm qt_$lang.qm
+		cp ../../../libraries/translations/qt_$lang.qm qt_$lang.qm
 	done
 
 	cd ../Plugins/imageformats
 	for qtplugin in "libqgif.dylib" "libqico.dylib" "libqjpeg.dylib" "libqmng.dylib" "libqsvg.dylib" "libqtga.dylib" "libqtiff.dylib"
 	do
-		hln ../../../../libraries/$qtplugin $qtplugin
+		cp ../../../../libraries/$qtplugin $qtplugin
 	done
 
 	cd ../iconengines
-	hln ../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
+	cp ../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
 
 	cd ../sqldrivers
-	hln ../../../../libraries/libqsqlite.dylib libqsqlite.dylib
+	cp ../../../../libraries/libqsqlite.dylib libqsqlite.dylib
 	cd ../../../..
 	
 	codesign --force --verify --verbose --strict --sign "Developer ID Application: Association Mobsya (P97H86YL8K)" "$asebaapps"
@@ -310,30 +310,30 @@ do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 	do
-		hln ../../../../libraries/$qtframework.framework $qtframework.framework
+		cp -R ../../../../libraries/$qtframework.framework $qtframework.framework
 	done
 
-	hln ../../../../libraries/qwt.framework qwt.framework
-	hln ../../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
-	hln ../../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
+	cp -R ../../../../libraries/qwt.framework qwt.framework
+	cp ../../../../libraries/libdashel.1.2.0.dylib libdashel.1.2.0.dylib
+	cp ../../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
 	cd ../translations
 	for lang in "fr" "de" "it" "es" "ja"
 	do
-		hln ../../../../libraries/translations/qt_$lang.qm qt_$lang.qm
+		cp ../../../../libraries/translations/qt_$lang.qm qt_$lang.qm
 	done
 
 	cd ../Plugins/imageformats
 	for qtplugin in "libqgif.dylib" "libqico.dylib" "libqjpeg.dylib" "libqmng.dylib" "libqsvg.dylib" "libqtga.dylib" "libqtiff.dylib"
 	do
-		hln ../../../../../libraries/$qtplugin $qtplugin
+		cp ../../../../../libraries/$qtplugin $qtplugin
 	done
 
 	cd ../iconengines
-	hln ../../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
+	cp ../../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
 
 	cd ../sqldrivers
-	hln ../../../../../libraries/libqsqlite.dylib libqsqlite.dylib
+	cp ../../../../../libraries/libqsqlite.dylib libqsqlite.dylib
 	cd ../../../.. 
 	
 	cd "$asebaapps/Contents/MacOS/"
@@ -351,8 +351,13 @@ cd ..
 # time to create a dmg
 cd ../..
 
+# replacing copies with hard links
+fdupes -r dmg_contents | perl -e 'while(<>){chomp;$t=$_;while(<>){chomp;last unless $_;unlink($_);link($t,$_)}}'
+du -sh dmg_contents
+
 #create temporary dmg with contents of dmg_contents folder
 hdiutil create -srcfolder dmg_contents -volname "Aseba" -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -size $200000k temp.dmg
+
 #mount it
 hdiutil attach temp.dmg
 #change permissions
