@@ -43,13 +43,13 @@ mkdir Simulations
 for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app"
 do
 	mkdir -p "$asebaapps/Contents/"{MacOS,Plugins/{imageformats,sqldrivers,iconengines},Resources,Frameworks,translations}
-	cp $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
+	hln $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
 done
 cd Simulations
 for asebaapps in "Aseba Playground.app" "Aseba Challenge.app"
 do
 	mkdir -p "$asebaapps/Contents/"{MacOS,Plugins/{imageformats,sqldrivers,iconengines},Resources,Frameworks,translations}
-	cp $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
+	hln $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
 done
 #copy resources into bundle folders
 cp $WORKSPACE/source/aseba/targets/playground/unifr.playground .
