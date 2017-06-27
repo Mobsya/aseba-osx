@@ -30,11 +30,7 @@ cmake\
  -D "CMAKE_OSX_DEPLOYMENT_TARGET=10.6"\
  -D "CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk"\
  -D "dashel_DIR=$WORKSPACE/build/dashel"\
- -D "DASHEL_INCLUDE_DIR=$WORKSPACE/source/dashel"\
- -D "DASHEL_LIBRARY=$WORKSPACE/build/dashel/libdashel.dylib"\
- -D "ENKI_INCLUDE_DIR=$WORKSPACE/source/enki"\
- -D "ENKI_LIBRARY=$WORKSPACE/build/enki/enki/libenki.a"\
- -D "ENKI_VIEWER_LIBRARY=$WORKSPACE/build/enki/viewer/libenkiviewer.a"\
+ -D "enki_DIR=$WORKSPACE/build/enki"\
  -D "QWT_INCLUDE_DIR=/usr/local/qwt-6.1.2/lib/qwt.framework/Headers"\
  -D "QWT_LIBRARIES=/usr/local/qwt-6.1.2/lib/qwt.framework/"\
  "$WORKSPACE/source/aseba"
