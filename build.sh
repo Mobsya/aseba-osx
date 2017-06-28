@@ -7,7 +7,7 @@ cmake\
  -D "CMAKE_BUILD_TYPE=Release"\
  -D "BUILD_SHARED_LIBS=ON"\
  -D "CMAKE_OSX_ARCHITECTURES=i386;x86_64"\
- -D "CMAKE_OSX_DEPLOYMENT_TARGET=10.6"\
+ -D "CMAKE_OSX_DEPLOYMENT_TARGET=10.9"\
  -D "CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk"\
  "$WORKSPACE/source/dashel"
 make
@@ -17,7 +17,7 @@ cd "$WORKSPACE/build/enki"
 cmake\
  -D "CMAKE_BUILD_TYPE=Release"\
  -D "CMAKE_OSX_ARCHITECTURES=x86_64"\
- -D "CMAKE_OSX_DEPLOYMENT_TARGET=10.6"\
+ -D "CMAKE_OSX_DEPLOYMENT_TARGET=10.9"\
  -D "CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk"\
  "$WORKSPACE/source/enki"
 make
@@ -27,7 +27,7 @@ cd "$WORKSPACE/build/aseba"
 cmake\
  -D "CMAKE_BUILD_TYPE=Release"\
  -D "CMAKE_OSX_ARCHITECTURES=x86_64"\
- -D "CMAKE_OSX_DEPLOYMENT_TARGET=10.6"\
+ -D "CMAKE_OSX_DEPLOYMENT_TARGET=10.9"\
  -D "CMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk"\
  -D "dashel_DIR=$WORKSPACE/build/dashel"\
  -D "enki_DIR=$WORKSPACE/build/enki"\
