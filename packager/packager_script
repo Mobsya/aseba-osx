@@ -42,6 +42,7 @@ mkdir libraries
 mkdir bin
 mkdir Simulations
 mkdir Simulations/examples
+#mkdir Simulations/examples
 
 for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app"
 do
@@ -89,11 +90,26 @@ cp $WORKSPACE/source/packager/Resources/qt_it.qm translations/
 for qtlib in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 do
 	cp -R $your_qt_path/lib/$qtlib.framework . && chmod -Rf u+w $qtlib.framework
+	
+	echo "Correcting framework debug code and bad Info.plist: ${qtlib}"
 	rm -f $qtlib.framework/Versions/4/*_debug
 	rm -f $qtlib.framework/Versions/Current/*_debug
 	rm -f $qtlib.framework/*_debug
 	rm -f $qtlib.framework/*_debug.prl
-
+	rmdir ${qtlib}.framework/Resources
+	rm -f ${qtlib}.framework/${qtlib}
+	rm -f ${qtlib}.framework/Headers
+	rm -f ${qtlib}.framework/${qtlib}.prl
+	rm -rf ${qtlib}.framework/Versions/4/Headers
+	mkdir -p ${qtlib}.framework/Versions/4/Resources/
+	ln -s Versions/Current/${qtlib} ${qtlib}.framework/${qtlib}
+	ln -s Versions/Current/Resources ${qtlib}.framework/Resources
+	mv ${qtlib}.framework/Contents/Info.plist ${qtlib}.framework/Versions/4/Resources/
+	rm -r ${qtlib}.framework/Contents
+	rm -f ${qtlib}.framework/Versions/Current/Resources/Resources
+	TMP=$(sed 's/_debug//g' ${qtlib}.framework/Resources/Info.plist)
+	echo "$TMP" > ${qtlib}.framework/Resources/Info.plist
+    
 	install_name_tool -change $your_qt_path/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql.framework/Versions/4/QtSql $qtlib.framework/Versions/4/$qtlib
 	install_name_tool -change $your_qt_path/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui $qtlib.framework/Versions/4/$qtlib
 	install_name_tool -change $your_qt_path/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore $qtlib.framework/Versions/4/$qtlib 
@@ -105,38 +121,44 @@ do
 	install_name_tool -id  @executable_path/../Frameworks/$qtlib.framework/Versions/4/$qtlib $qtlib.framework/Versions/4/$qtlib
 	otool -L $qtlib.framework/Versions/4/$qtlib 
 	
-	codesign --force --verify --verbose --sign "$your_certificate" $qtlib.framework/Versions/4/$qtlib
+	codesign --force --verify --verbose --strict --sign "$your_certificate" $qtlib.framework/Versions/4/$qtlib
 done
 
 # Qwt framework
 cp  -R $your_qwt_path/lib/qwt.framework . && chmod -Rf u+w qwt.framework
+rm -r qwt.framework/Versions/6/Headers
+rm qwt.framework/Headers
+mkdir -p qwt.framework/Versions/6/Resources/
+ln -s Versions/Current/Resources qwt.framework/Resources
+mv qwt.framework/Contents/Info.plist qwt.framework/Versions/6/Resources/
+rm -r qwt.framework/Contents
 install_name_tool -id  @executable_path/../Frameworks/qwt.framework/Versions/6/qwt qwt.framework/Versions/6/qwt
 install_name_tool -change $your_qt_path/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui.framework/Versions/4/QtGui qwt.framework/Versions/6/qwt
 install_name_tool -change $your_qt_path/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore qwt.framework/Versions/6/qwt
 install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg.framework/Versions/4/QtSvg qwt.framework/Versions/6/qwt
 install_name_tool -change $your_qt_path/lib/QtOpenGL.framework/Versions/4/QtOpenGL @executable_path/../Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL qwt.framework/Versions/6/qwt
 otool -L qwt.framework/Versions/6/qwt
-codesign --force --verify --verbose --sign "$your_certificate" qwt.framework/Versions/6/qwt
+codesign --force --verify --verbose --strict --sign "$your_certificate" qwt.framework/Versions/6/qwt
 
 # Dashel
 cp $WORKSPACE/build/dashel/libdashel.1.3.0.dylib . && chmod -Rf u+w libdashel.1.3.0.dylib
 install_name_tool -id  @executable_path/../Frameworks/libdashel.1.3.0.dylib libdashel.1.3.0.dylib
 otool -L libdashel.1.3.0.dylib
-codesign --force --verify --verbose --sign "$your_certificate" libdashel.1.3.0.dylib
+codesign --force --verify --verbose --strict --sign "$your_certificate" libdashel.1.3.0.dylib
 
 # Qt plugins
 cp $your_qt_path/lib/libQtCLucene.4.8.7.dylib . && chmod -Rf u+w libQtCLucene.4.8.7.dylib
 install_name_tool -id @executable_path/../Frameworks/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 install_name_tool -change $your_qt_path/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore libQtCLucene.4.8.7.dylib
 otool -L libQtCLucene.4.8.7.dylib
-codesign --force --verify --verbose --sign "$your_certificate" libQtCLucene.4.8.7.dylib
+codesign --force --verify --verbose --strict --sign "$your_certificate" libQtCLucene.4.8.7.dylib
 
 cp $your_qt_path/plugins/sqldrivers/libqsqlite.dylib . && chmod -Rf u+w libqsqlite.dylib
 install_name_tool -id @executable_path/../Plugins/sqldrivers/libraries/libqsqlite.dylib libqsqlite.dylib 
 install_name_tool -change $your_qt_path/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/Versions/4/QtCore libqsqlite.dylib
 install_name_tool -change $your_qt_path/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql.framework/Versions/4/QtSql libqsqlite.dylib
 otool -L libqsqlite.dylib
-codesign --force --verify --verbose --sign "$your_certificate" libqsqlite.dylib
+codesign --force --verify --verbose --strict --sign "$your_certificate" libqsqlite.dylib
 
 for formatplugin in "libqgif" "libqico" "libqjpeg" "libqmng" "libqsvg" "libqtga" "libqtiff"
 do
@@ -148,7 +170,7 @@ do
 	install_name_tool -change $your_qt_path/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml $formatplugin.dylib
 	install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg.framework/Versions/4/QtSvg $formatplugin.dylib
 	otool -L $formatplugin.dylib
-	codesign --force --verify --verbose --sign "$your_certificate" $formatplugin.dylib
+	codesign --force --verify --verbose --strict --sign "$your_certificate" $formatplugin.dylib
 done
 
 
@@ -159,7 +181,7 @@ install_name_tool -change $your_qt_path/lib/QtGui.framework/Versions/4/QtGui @ex
 install_name_tool -change $your_qt_path/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml.framework/Versions/4/QtXml libqsvgicon.dylib
 install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg.framework/Versions/4/QtSvg libqsvgicon.dylib
 otool -L libqsvgicon.dylib
-codesign --force --verify --verbose --sign "$your_certificate" libqsvgicon.dylib
+codesign --force --verify --verbose --strict --sign "$your_certificate" libqsvgicon.dylib
 
 cd ..
 
@@ -199,7 +221,25 @@ do
 	install_name_tool -change qwt.framework/Versions/6/qwt @executable_path/../Frameworks/qwt.framework/Versions/6/qwt $asebaexec
 	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.0.dylib $asebaexec
 	otool -L $asebaexec
-	codesign --force --verify --verbose --sign "$your_certificate" $asebaexec
+	codesign --force --verify --verbose --strict --sign "$your_certificate" $asebaexec
+done
+
+
+#change links of executables that are not in an app bundle = those that will be used rather in command line and do not need a nice icon
+# FIXME: asebamassloader depends on Qt which brings too much Qt dependencies
+for asebaexec in "asebaswitch" "asebarec" "asebacmd" "asebadump" "asebaplay" "asebadummynode" "asebahttp" "asebahttp2" "asebamassloader"
+do
+	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../libraries/libdashel.1.3.0.dylib $asebaexec
+	install_name_tool -change $your_qt_path/lib/QtCore.framework/Versions/4/QtCore @executable_path/../libraries/QtCore.framework/Versions/4/QtCore $asebaexec
+	install_name_tool -change $your_qt_path/lib/QtXml.framework/Versions/4/QtXml @executable_path/../libraries/QtXml.framework/Versions/4/QtXml $asebaexec
+	install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../libraries/QtSvg.framework/Versions/4/QtSvg $asebaexec
+	install_name_tool -change $your_qt_path/lib/QtHelp.framework/Versions/4/QtHelp @executable_path/../libraries/QtHelp.framework/Versions/4/QtHelp $asebaexec
+	install_name_tool -change $your_qt_path/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../libraries/QtWebKit.framework/Versions/4/QtWebKit $asebaexec
+	install_name_tool -change $your_qt_path/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../libraries/QtNetwork.framework/Versions/4/QtNetwork $asebaexec
+
+	otool -L $asebaexec
+	codesign --force --verify --verbose --strict --sign "$your_certificate" $asebaexec
+	mv $asebaexec bin/
 done
 
 
@@ -218,33 +258,35 @@ do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 	do
-		hln ../../../libraries/$qtframework.framework $qtframework.framework
+		cp -R ../../../libraries/$qtframework.framework $qtframework.framework
 	done
 
-	hln ../../../libraries/qwt.framework qwt.framework
-	hln ../../../libraries/libdashel.1.3.0.dylib libdashel.1.3.0.dylib
-	hln ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
+	cp -R ../../../libraries/qwt.framework qwt.framework
+	cp ../../../libraries/libdashel.1.3.0.dylib libdashel.1.3.0.dylib
+	cp ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
 	cd ../translations
 	for lang in "fr" "de" "it" "es" "ja"
 	do
-		hln ../../../libraries/translations/qt_$lang.qm qt_$lang.qm
+		cp ../../../libraries/translations/qt_$lang.qm qt_$lang.qm
 	done
 
 	cd ../Plugins/imageformats
 	for qtplugin in "libqgif.dylib" "libqico.dylib" "libqjpeg.dylib" "libqmng.dylib" "libqsvg.dylib" "libqtga.dylib" "libqtiff.dylib"
 	do
-		hln ../../../../libraries/$qtplugin $qtplugin
+		cp ../../../../libraries/$qtplugin $qtplugin
 	done
 
 	cd ../iconengines
-	hln ../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
+	cp ../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
 
 	cd ../sqldrivers
-	hln ../../../../libraries/libqsqlite.dylib libqsqlite.dylib
+	cp ../../../../libraries/libqsqlite.dylib libqsqlite.dylib
 	cd ../../../..
 	
-	codesign --force --verify --verbose --sign "$your_certificate" "$asebaapps"
+	codesign --force --verify --verbose --strict --sign "$your_certificate" "$asebaapps"
+	codesign --verify --deep --verbose=4 "$asebaapps"
+	spctl -a -vvvv "$asebaapps"
 done
 
 cd Simulations
@@ -264,7 +306,7 @@ do
 	install_name_tool -change qwt.framework/Versions/6/qwt @executable_path/../Frameworks/qwt.framework/Versions/6/qwt $asebaexec
 	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.0.dylib $asebaexec
 	otool -L $asebaexec
-	codesign --force --verify --verbose --sign "$your_certificate" $asebaexec
+	codesign --force --verify --verbose --strict --sign "$your_certificate" $asebaexec
 done
 mv asebachallenge Aseba\ Challenge.app/Contents/MacOS/
 mv asebaplayground Aseba\ Playground.app/Contents/MacOS/
@@ -274,72 +316,57 @@ do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
 	do
-		hln ../../../../libraries/$qtframework.framework $qtframework.framework
+		cp -R ../../../../libraries/$qtframework.framework $qtframework.framework
 	done
 
-	hln ../../../../libraries/qwt.framework qwt.framework
-	hln ../../../../libraries/libdashel.1.3.0.dylib libdashel.1.3.0.dylib
-	hln ../../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
+	cp -R ../../../../libraries/qwt.framework qwt.framework
+	cp ../../../../libraries/libdashel.1.3.0.dylib libdashel.1.3.0.dylib
+	cp ../../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
 	cd ../translations
 	for lang in "fr" "de" "it" "es" "ja"
 	do
-		hln ../../../../libraries/translations/qt_$lang.qm qt_$lang.qm
+		cp ../../../../libraries/translations/qt_$lang.qm qt_$lang.qm
 	done
 
 	cd ../Plugins/imageformats
 	for qtplugin in "libqgif.dylib" "libqico.dylib" "libqjpeg.dylib" "libqmng.dylib" "libqsvg.dylib" "libqtga.dylib" "libqtiff.dylib"
 	do
-		hln ../../../../../libraries/$qtplugin $qtplugin
+		cp ../../../../../libraries/$qtplugin $qtplugin
 	done
 
 	cd ../iconengines
-	hln ../../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
+	cp ../../../../../libraries/libqsvgicon.dylib libqsvgicon.dylib
 
 	cd ../sqldrivers
-	hln ../../../../../libraries/libqsqlite.dylib libqsqlite.dylib
+	cp ../../../../../libraries/libqsqlite.dylib libqsqlite.dylib
 	cd ../../../.. 
 	
 	cd "$asebaapps/Contents/MacOS/"
-	hln ../../../../bin/asebaswitch asebaswitch
+	cp $WORKSPACE/build/aseba/switches/switch/asebaswitch asebaswitch
+	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.0.dylib asebaswitch
+	otool -L asebaswitch
+	codesign --force --verify --verbose --strict --sign "$your_certificate" asebaswitch
 	cd ../../..
 	
-	codesign --force --verify --verbose --sign "$your_certificate" "$asebaapps"
+	codesign --force --verify --verbose --strict --sign "$your_certificate" "$asebaapps"
 done
 cd ..
-#change links of executables that are not in an app bundle = those that will be used rather in command line and do not need a nice icon
-# FIXME: what is up with asebamassloader? command line or nice app bundle with GUI?
-for asebaexec in "asebaswitch" "asebarec" "asebacmd" "asebadump" "asebaplay" "asebadummynode" "asebahttp" "asebahttp2" "asebamassloader"
-do
-	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../libraries/libdashel.1.3.0.dylib $asebaexec
-	install_name_tool -change $your_qt_path/lib/QtCore.framework/Versions/4/QtCore @executable_path/../libraries/QtCore.framework/Versions/4/QtCore $asebaexec
-	install_name_tool -change $your_qt_path/lib/QtXml.framework/Versions/4/QtXml @executable_path/../libraries/QtXml.framework/Versions/4/QtXml $asebaexec
-	install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../libraries/QtSvg.framework/Versions/4/QtSvg $asebaexec
-	install_name_tool -change $your_qt_path/lib/QtHelp.framework/Versions/4/QtHelp @executable_path/../libraries/QtHelp.framework/Versions/4/QtHelp $asebaexec
-	install_name_tool -change $your_qt_path/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../libraries/QtWebKit.framework/Versions/4/QtWebKit $asebaexec
-	install_name_tool -change $your_qt_path/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../libraries/QtNetwork.framework/Versions/4/QtNetwork $asebaexec
 
 	otool -L $asebaexec
 	codesign --force --verify --verbose --sign "$your_certificate" $asebaexec
 done
 
-
-#place executables into bin/
-mv asebacmd bin/
-mv asebadump bin/
-mv asebaplay bin/
-mv asebarec bin/
-mv asebaswitch bin/
-mv asebadummynode bin/
-mv asebahttp bin/
-mv asebahttp2 bin/
-mv asebamassloader bin/
-
 # time to create a dmg
 cd ../..
 
+# replacing copies with hard links
+fdupes -r dmg_contents | perl -e 'while(<>){chomp;$t=$_;while(<>){chomp;last unless $_;unlink($_);link($t,$_)}}'
+du -sh dmg_contents
+
 #create temporary dmg with contents of dmg_contents folder
 hdiutil create -srcfolder dmg_contents -volname "Aseba" -fs HFS+ -fsargs "-c c=64,a=16,e=16" -format UDRW -size $200000k temp.dmg
+
 #mount it
 hdiutil attach temp.dmg
 #change permissions
@@ -351,6 +378,6 @@ hdiutil detach /Volumes/Aseba
 #make it into compressed dmg
 hdiutil convert temp.dmg  -format UDZO -imagekey zlib-level=9 -o Aseba-$BUILD_ID.dmg
 #sign the dmg
-codesign --force --verify --verbose --sign "$your_certificate" Aseba-$BUILD_ID.dmg
+codesign --force --deep --verify --verbose=2 --sign "$your_certificate" Aseba-$BUILD_ID.dmg
 rm -f temp.dmg
 exit 0
