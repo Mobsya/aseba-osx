@@ -42,7 +42,6 @@ mkdir libraries
 mkdir bin
 mkdir Simulations
 mkdir Simulations/examples
-#mkdir Simulations/examples
 
 for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app"
 do
@@ -352,10 +351,6 @@ do
 	codesign --force --verify --verbose --strict --sign "$your_certificate" "$asebaapps"
 done
 cd ..
-
-	otool -L $asebaexec
-	codesign --force --verify --verbose --sign "$your_certificate" $asebaexec
-done
 
 # time to create a dmg
 cd ../..
