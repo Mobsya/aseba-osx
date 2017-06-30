@@ -147,7 +147,7 @@ otool -L libdashel.1.3.0.dylib
 codesign --force --verify --verbose --strict --sign "$your_certificate" libdashel.1.3.0.dylib
 
 #protobuf
-cp -R $your_protobuf_path/lib/libprotobuf.13.dylib . && chmod -Rf u+w libprotobuf.13.dylib
+cp $your_protobuf_path/lib/libprotobuf.13.dylib . && chmod -Rf u+w libprotobuf.13.dylib
 install_name_tool -id  @executable_path/../Frameworks/libprotobuf.13.dylib libprotobuf.13.dylib
 otool -L libprotobuf.13.dylib
 codesign --force --verify --verbose --strict --sign "$your_certificate" libprotobuf.13.dylib
