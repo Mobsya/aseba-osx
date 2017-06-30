@@ -1,6 +1,7 @@
 #!/bin/bash
 echo your_qt_path=${your_qt_path:='/usr/local/Trolltech/Qt-4.8.7'}
 echo your_qwt_path=${your_qwt_path:='/usr/local/qwt-6.1.2'}
+echo your_protobuf_path=${your_protobuf_path:='/usr/local/opt/protobuf'}
 echo your_certificate=${your_certificate:='Developer ID Application: Association Mobsya (P97H86YL8K)'}
 
 [ "$your_certificate" = "none" ] && function codesign() { true; } # if no certificate, codesign is a no-op
@@ -145,6 +146,13 @@ install_name_tool -id  @executable_path/../Frameworks/libdashel.1.3.0.dylib libd
 otool -L libdashel.1.3.0.dylib
 codesign --force --verify --verbose --strict --sign "$your_certificate" libdashel.1.3.0.dylib
 
+#protobuf
+cp -R $your_protobuf_path/lib/libprotobuf.13.dylib . && chmod -Rf u+w libprotobuf.13.dylib
+install_name_tool -id  @executable_path/../Frameworks/libprotobuf.13.dylib libprotobuf.13.dylib
+otool -L libprotobuf.13.dylib
+codesign --force --verify --verbose --strict --sign "$your_certificate" libprotobuf.13.dylib
+
+
 # Qt plugins
 cp $your_qt_path/lib/libQtCLucene.4.8.7.dylib . && chmod -Rf u+w libQtCLucene.4.8.7.dylib
 install_name_tool -id @executable_path/../Frameworks/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
@@ -219,6 +227,7 @@ do
 	install_name_tool -change $your_qt_path/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit.framework/Versions/4/QtWebKit $asebaexec
 	install_name_tool -change qwt.framework/Versions/6/qwt @executable_path/../Frameworks/qwt.framework/Versions/6/qwt $asebaexec
 	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.0.dylib $asebaexec
+	install_name_tool -change @rpath/libprotobuf.13.dylib @executable_path/../Frameworks/libprotobuf.13.dylib $asebaexec
 	otool -L $asebaexec
 	codesign --force --verify --verbose --strict --sign "$your_certificate" $asebaexec
 done
@@ -262,6 +271,7 @@ do
 
 	cp -R ../../../libraries/qwt.framework qwt.framework
 	cp ../../../libraries/libdashel.1.3.0.dylib libdashel.1.3.0.dylib
+	cp ../../../libraries/libprotobuf.13.dylib libprotobuf.13.dylib
 	cp ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
 	cd ../translations
