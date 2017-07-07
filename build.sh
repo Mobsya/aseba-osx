@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-
+rm -R "$WORKSPACE/build"
 mkdir -p "$WORKSPACE/build/dashel"
 cd "$WORKSPACE/build/dashel"
 cmake\
