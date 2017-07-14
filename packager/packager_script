@@ -44,7 +44,7 @@ mkdir bin
 mkdir Simulations
 mkdir Simulations/examples
 
-for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app"
+for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app" "Thymio Web Bridge.app"
 do
 	mkdir -p "$asebaapps/Contents/"{MacOS,Plugins/{imageformats,sqldrivers,iconengines},Resources,Frameworks,translations}
 	cp $WORKSPACE/source/packager/Resources/qt.conf "$asebaapps/Contents/Resources/"
@@ -72,6 +72,8 @@ cp $WORKSPACE/source/aseba/menu/osx/thymiovpl.icns Thymio\ VPL.app/Contents/Reso
 cp $WORKSPACE/source/packager/Resources/Info.plist.vpl Thymio\ VPL.app/Contents/Info.plist
 cp $WORKSPACE/source/aseba/menu/osx/thymiownetconfig.icns Wireless\ Thymio\ Network\ Configurator.app/Contents/Resources
 cp $WORKSPACE/source/packager/Resources/Info.plist.netconfig Wireless\ Thymio\ Network\ Configurator.app/Contents/Info.plist
+cp $WORKSPACE/source/aseba/menu/osx/thymiowebbridge.icns Thymio\ Web\ Bridge.app/Contents/Resources
+cp $WORKSPACE/source/packager/Resources/Info.plist.thymiohttp Thymio\ Web\ Bridge.app/Contents/Info.plist
 #cp $WORKSPACE/source/packager/Resources/background.png .background/
 
 #copy all necessary libraries, plugins etc in the package and make them link to the right places (relative paths whithin the app bundle)
@@ -258,10 +260,10 @@ mv thymiownetconfig Wireless\ Thymio\ Network\ Configurator.app/Contents/MacOS/
 cp $WORKSPACE/source/packager/Resources/asethym Aseba\ Studio\ for\ Thymio.app/contents/MacOS/ #simple executable bash script starting Studio with Thymio II as target
 mv thymiovpl Thymio\ VPL.app/Contents/MacOS/
 cp $WORKSPACE/source/packager/Resources/launchthymiovpl Thymio\ VPL.app/contents/MacOS/ #simple executable bash script starting VPL with Thymio II as target
-
+cp $WORKSPACE/source/packager/Resources/thymiohttp Thymio\ Web\ Bridge.app/contents/MacOS/ #simple executable bash script starting asebahttp with Thymio II as target (option -v --autorestart)
 
 #create symlinks to the libraries from inside the app bundles
-for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app"
+for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app" "Thymio Web Bridge.app"
 do
 	cd "$asebaapps/Contents/Frameworks/"
 	for qtframework in "QtGui" "QtCore" "QtOpenGL" "QtXml" "QtNetwork" "QtHelp" "QtSql" "QtSvg" "QtWebKit"
