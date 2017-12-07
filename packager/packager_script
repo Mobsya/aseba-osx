@@ -143,10 +143,10 @@ otool -L qwt.framework/Versions/6/qwt
 codesign --force --verify --verbose --strict --sign "$your_certificate" qwt.framework/Versions/6/qwt
 
 # Dashel
-cp $WORKSPACE/build/dashel/libdashel.1.3.1.dylib . && chmod -Rf u+w libdashel.1.3.1.dylib
-install_name_tool -id  @executable_path/../Frameworks/libdashel.1.3.1.dylib libdashel.1.3.1.dylib
-otool -L libdashel.1.3.1.dylib
-codesign --force --verify --verbose --strict --sign "$your_certificate" libdashel.1.3.1.dylib
+cp $WORKSPACE/build/dashel/libdashel.1.3.2.dylib . && chmod -Rf u+w libdashel.1.3.2.dylib
+install_name_tool -id  @executable_path/../Frameworks/libdashel.1.3.2.dylib libdashel.1.3.2.dylib
+otool -L libdashel.1.3.2.dylib
+codesign --force --verify --verbose --strict --sign "$your_certificate" libdashel.1.3.2.dylib
 
 #protobuf
 cp $your_protobuf_path/lib/libprotobuf.13.dylib . && chmod -Rf u+w libprotobuf.13.dylib
@@ -228,7 +228,7 @@ do
 	install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg.framework/Versions/4/QtSvg $asebaexec
 	install_name_tool -change $your_qt_path/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit.framework/Versions/4/QtWebKit $asebaexec
 	install_name_tool -change qwt.framework/Versions/6/qwt @executable_path/../Frameworks/qwt.framework/Versions/6/qwt $asebaexec
-	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.1.dylib $asebaexec
+	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.2.dylib $asebaexec
 	install_name_tool -change $your_protobuf_path/lib/libprotobuf.13.dylib @executable_path/../Frameworks/libprotobuf.13.dylib $asebaexec
 	otool -L $asebaexec
 	codesign --force --verify --verbose --strict --sign "$your_certificate" $asebaexec
@@ -239,7 +239,7 @@ done
 # FIXME: asebamassloader depends on Qt which brings too much Qt dependencies
 for asebaexec in "asebaswitch" "asebarec" "asebacmd" "asebadump" "asebaplay" "asebadummynode" "asebahttp" "asebahttp2" "asebamassloader"
 do
-	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../libraries/libdashel.1.3.1.dylib $asebaexec
+	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../libraries/libdashel.1.3.2.dylib $asebaexec
 	install_name_tool -change $your_qt_path/lib/QtCore.framework/Versions/4/QtCore @executable_path/../libraries/QtCore.framework/Versions/4/QtCore $asebaexec
 	install_name_tool -change $your_qt_path/lib/QtXml.framework/Versions/4/QtXml @executable_path/../libraries/QtXml.framework/Versions/4/QtXml $asebaexec
 	install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../libraries/QtSvg.framework/Versions/4/QtSvg $asebaexec
@@ -272,7 +272,7 @@ do
 	done
 
 	cp -R ../../../libraries/qwt.framework qwt.framework
-	cp ../../../libraries/libdashel.1.3.1.dylib libdashel.1.3.1.dylib
+	cp ../../../libraries/libdashel.1.3.1.dylib libdashel.1.3.2.dylib
 	cp ../../../libraries/libprotobuf.13.dylib libprotobuf.13.dylib
 	cp ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
@@ -315,7 +315,7 @@ do
 	install_name_tool -change $your_qt_path/lib/QtSvg.framework/Versions/4/QtSvg @executable_path/../Frameworks/QtSvg.framework/Versions/4/QtSvg $asebaexec
 	install_name_tool -change $your_qt_path/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit.framework/Versions/4/QtWebKit $asebaexec
 	install_name_tool -change qwt.framework/Versions/6/qwt @executable_path/../Frameworks/qwt.framework/Versions/6/qwt $asebaexec
-	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.1.dylib $asebaexec
+	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.2.dylib $asebaexec
 	otool -L $asebaexec
 	codesign --force --verify --verbose --strict --sign "$your_certificate" $asebaexec
 done
@@ -355,7 +355,7 @@ do
 	
 	cd "$asebaapps/Contents/MacOS/"
 	cp $WORKSPACE/build/aseba/switches/switch/asebaswitch asebaswitch
-	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.1.dylib asebaswitch
+	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.2.dylib asebaswitch
 	otool -L asebaswitch
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebaswitch
 	cd ../../..
