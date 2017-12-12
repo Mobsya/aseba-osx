@@ -272,7 +272,7 @@ do
 	done
 
 	cp -R ../../../libraries/qwt.framework qwt.framework
-	cp ../../../libraries/libdashel.1.3.1.dylib libdashel.1.3.2.dylib
+	cp ../../../libraries/libdashel.1.3.2.dylib libdashel.1.3.2.dylib
 	cp ../../../libraries/libprotobuf.13.dylib libprotobuf.13.dylib
 	cp ../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
@@ -331,7 +331,7 @@ do
 	done
 
 	cp -R ../../../../libraries/qwt.framework qwt.framework
-	cp ../../../../libraries/libdashel.1.3.1.dylib libdashel.1.3.1.dylib
+	cp ../../../../libraries/libdashel.1.3.2.dylib libdashel.1.3.2.dylib
 	cp ../../../../libraries/libQtCLucene.4.8.7.dylib libQtCLucene.4.8.7.dylib
 	
 	cd ../translations
