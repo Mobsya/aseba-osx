@@ -351,17 +351,28 @@ do
 
 	cd ../sqldrivers
 	cp ../../../../../libraries/libqsqlite.dylib libqsqlite.dylib
-	cd ../../../.. 
-	
+	cd ../../../..
+
 	cd "$asebaapps/Contents/MacOS/"
 	cp $WORKSPACE/build/aseba/switches/switch/asebaswitch asebaswitch
 	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.2.dylib asebaswitch
 	otool -L asebaswitch
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebaswitch
 	cd ../../..
-	
+
 	codesign --force --verify --verbose --strict --sign "$your_certificate" "$asebaapps"
 done
+
+
+#Thymio Blockly Web app
+mkdir -p "Thymio Blockly.app/Contents/"{MacOS,Resources}
+cp $WORKSPACE/source/aseba/menu/osx/scratchblock.icns "Thymio Blockly.app/Contents/Resources/blockly.icns"
+cp $WORKSPACE/source/packager/Resources/Info.plist.blockly "Thymio Blockly.app/Contents/"
+cp $WORKSPACE/source/packager/Resources/open-blockly "Thymio Blockly.app/Contents/MacOs"
+chmod +x "Thymio Blockly.app/Contents/MacOs/open-blockly"
+unzip "$ASEBA_DEP/blockly/blockly.zip" -d "Thymio Blockly.app/Contents/Resources/"
+codesign --force --verify --verbose --strict --sign "$your_certificate" "Thymio Blockly.app"
+
 cd ..
 
 # time to create a dmg
