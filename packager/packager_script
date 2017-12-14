@@ -363,17 +363,17 @@ do
 	codesign --force --verify --verbose --strict --sign "$your_certificate" "$asebaapps"
 done
 
+cd .. #simulations
 
 #Thymio Blockly Web app
 mkdir -p "Thymio Blockly.app/Contents/"{MacOS,Resources}
 cp $WORKSPACE/source/aseba/menu/osx/scratchblock.icns "Thymio Blockly.app/Contents/Resources/blockly.icns"
-cp $WORKSPACE/source/packager/Resources/Info.plist.blockly "Thymio Blockly.app/Contents/"
+cp $WORKSPACE/source/packager/Resources/Info.plist.blockly "Thymio Blockly.app/Contents/Info.plist"
 cp $WORKSPACE/source/packager/Resources/open-blockly "Thymio Blockly.app/Contents/MacOs"
 chmod +x "Thymio Blockly.app/Contents/MacOs/open-blockly"
 unzip "$ASEBA_DEP/blockly/blockly.zip" -d "Thymio Blockly.app/Contents/Resources/"
 codesign --force --verify --verbose --strict --sign "$your_certificate" "Thymio Blockly.app"
 
-cd ..
 
 # time to create a dmg
 cd ../..
