@@ -359,12 +359,12 @@ do
 	otool -L asebaswitch
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebaswitch
 	
-	cp $WORKSPACE/build/aseba/switches/switch/asebahttp asebahttp
+	cp $WORKSPACE/build/aseba/switches/http/asebahttp asebahttp
 	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.2.dylib asebahttp
 	otool -L asebahttp
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebahttp
 	
-	cp $WORKSPACE/build/aseba/switches/switch/asebamassloader asebamassloader
+	cp $WORKSPACE/build/aseba/clients/massloader/asebamassloader asebamassloader
 	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.2.dylib asebamassloader
 	otool -L asebamassloader
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebamassloader
