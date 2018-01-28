@@ -1,2 +1,5 @@
 #!/bin/bash
-exec "$(dirname "$0")/../../../bin/asebahttp" --autorestart -s 33333 ser:name=Thymio
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT="$DIR/command.sh"
+chmod +x "$SCRIPT"
+open -a Terminal.app "$SCRIPT"
