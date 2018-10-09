@@ -1,7 +1,7 @@
 [submodule "aseba"]
 	path = aseba
 	url = https://github.com/mobsya/aseba.git
-	branch = master
+	branch = release-1.6.x
 [submodule "dashel"]
 	path = dashel
 	url = https://github.com/mobsya/dashel.git
