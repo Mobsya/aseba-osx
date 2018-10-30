@@ -261,7 +261,10 @@ cp $WORKSPACE/source/packager/Resources/asethym Aseba\ Studio\ for\ Thymio.app/c
 mv thymiovpl Thymio\ VPL.app/Contents/MacOS/
 cp $WORKSPACE/source/packager/Resources/launchthymiovpl Thymio\ VPL.app/contents/MacOS/ #simple executable bash script starting VPL with Thymio II as target
 cp $WORKSPACE/source/packager/Resources/thymiohttp Thymio\ Web\ Bridge.app/contents/MacOS/ #simple executable bash script starting asebahttp with Thymio  II as target (option -v --autorestart)
+
+
 cp $WORKSPACE/source/packager/Resources/command.sh Thymio\ Web\ Bridge.app/contents/MacOS/
+codesign --force --verify --verbose --strict --sign "$your_certificate" "Thymio Web Bridge.app/contents/MacOS/command.sh"
 
 #create symlinks to the libraries from inside the app bundles
 for asebaapps in "Aseba Studio.app" "Thymio Firmware Upgrader.app" "Aseba Studio for Thymio.app" "Thymio VPL.app" "Wireless Thymio Network Configurator.app" "Thymio Web Bridge.app"
