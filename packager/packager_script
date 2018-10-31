@@ -246,7 +246,8 @@ do
 	install_name_tool -change $your_qt_path/lib/QtHelp.framework/Versions/4/QtHelp @executable_path/../libraries/QtHelp.framework/Versions/4/QtHelp $asebaexec
 	install_name_tool -change $your_qt_path/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../libraries/QtWebKit.framework/Versions/4/QtWebKit $asebaexec
 	install_name_tool -change $your_qt_path/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../libraries/QtNetwork.framework/Versions/4/QtNetwork $asebaexec
-
+	install_name_tool -change $your_qt_path/lib/QtOpenGL.framework/Versions/4/QtOpenGL @executable_path/../Frameworks/QtOpenGL.framework/Versions/4/QtOpenGL $asebaexec
+	
 	otool -L $asebaexec
 	codesign --force --verify --verbose --strict --sign "$your_certificate" $asebaexec
 	mv $asebaexec bin/
@@ -358,13 +359,11 @@ do
 	cd ../../../..
 
 	cd "$asebaapps/Contents/MacOS/"
-	cp $WORKSPACE/build/aseba/switches/switch/asebaswitch asebaswitch
-	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.3.dylib asebaswitch
+	cp ../../../../bin/asebaswitch asebaswitch
 	otool -L asebaswitch
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebaswitch
 
-	cp $WORKSPACE/build/aseba/switches/http/asebahttp asebahttp
-	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.3.dylib asebahttp
+	cp ../../../../bin/asebahttp asebahttp
 	otool -L asebahttp
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebahttp
 
