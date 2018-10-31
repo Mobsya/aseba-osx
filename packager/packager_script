@@ -368,7 +368,7 @@ do
 	otool -L asebahttp
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebahttp
 
-	cp ../../../../bin/massloader/asebamassloader asebamassloader
+	cp ../../../../bin/asebamassloader asebamassloader
 	otool -L asebamassloader
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebamassloader
 
