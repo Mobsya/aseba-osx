@@ -368,8 +368,7 @@ do
 	otool -L asebahttp
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebahttp
 
-	cp $WORKSPACE/build/aseba/clients/massloader/asebamassloader asebamassloader
-	install_name_tool -change @rpath/libdashel.1.dylib @executable_path/../Frameworks/libdashel.1.3.3.dylib asebamassloader
+	cp ../../../../bin/massloader/asebamassloader asebamassloader
 	otool -L asebamassloader
 	codesign --force --verify --verbose --strict --sign "$your_certificate" asebamassloader
 
